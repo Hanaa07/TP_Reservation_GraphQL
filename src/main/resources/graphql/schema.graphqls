@@ -1,0 +1,106 @@
+# Enum Types
+enum TypeChambre {
+    SIMPLE
+    DOUBLE
+}
+
+enum Role {
+    USER
+    ADMIN
+}
+
+# Entity Types
+type Chambre {
+    id: ID!
+    typeChambre: TypeChambre!
+    prix: Float!
+    disponible: Boolean!
+    reservation: Reservation
+}
+
+type Client {
+    id: ID!
+    nom: String!
+    prenom: String!
+    email: String!
+    telephone: String!
+    reservations: [Reservation!]
+}
+
+type Reservation {
+    id: ID!
+    client: Client!
+    chambres: [Chambre!]
+    dateDebut: String!
+    dateFin: String!
+    preferences: String
+}
+
+type Utilisateur {
+    id: ID!
+    nom: String!
+    role: Role!
+}
+
+# Input Types for Mutations
+input ChambreInput {
+    typeChambre: TypeChambre!
+    prix: Float!
+    disponible: Boolean!
+}
+
+input ClientInput {
+    nom: String!
+    prenom: String!
+    email: String!
+    telephone: String!
+}
+
+input ReservationInput {
+    clientId: ID!
+    chambresIds: [ID!]!
+    dateDebut: String!
+    dateFin: String!
+    preferences: String
+}
+
+input UtilisateurInput {
+    nom: String!
+    motDePasse: String!
+    role: Role!
+}
+
+# Query Type
+type Query {
+    getAllChambres: [Chambre!]!
+    getChambreById(id: ID!): Chambre
+    getAvailableChambres: [Chambre!]!
+
+    getAllClients: [Client!]!
+    getClientById(id: ID!): Client
+
+    getAllReservations: [Reservation!]!
+    getReservationById(id: ID!): Reservation
+    getClientReservations(clientId: ID!): [Reservation!]!
+
+    getAllUtilisateurs: [Utilisateur!]!
+}
+
+# Mutation Type
+type Mutation {
+    createChambre(input: ChambreInput!): Chambre!
+    updateChambre(id: ID!, input: ChambreInput!): Chambre!
+    deleteChambre(id: ID!): Boolean!
+
+    createClient(input: ClientInput!): Client!
+    updateClient(id: ID!, input: ClientInput!): Client!
+    deleteClient(id: ID!): Boolean!
+
+    createReservation(input: ReservationInput!): Reservation!
+    updateReservation(id: ID!, input: ReservationInput!): Reservation!
+    deleteReservation(id: ID!): Boolean!
+
+    createUtilisateur(input: UtilisateurInput!): Utilisateur!
+    updateUtilisateur(id: ID!, input: UtilisateurInput!): Utilisateur!
+    deleteUtilisateur(id: ID!): Boolean!
+}
